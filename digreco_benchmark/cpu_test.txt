@@ -1,0 +1,49 @@
+============================================================
+[ INFO ] Creating Inference Engine
+[ INFO ] Loading network files:
+	./model/digreco.xml
+	./model/digreco.bin
+[ INFO ] Loading testdata
+[ INFO ] Preparing input blobs
+[ INFO ] Loading model to the plugin
+[ INFO ] Starting inference in synchronous mode
+[ INFO ] Processing input batch [Device: CPU, Batchsize: 1]
+[ INFO ] Print the result
+Total processed images:  1
+Correct processed images:  0
+Accuracy: 0.00%
+Time: 0.0071s
+============================================================
+[ INFO ] Finished sucessfully
+[ INFO ] Creating Inference Engine
+[ INFO ] Loading network files:
+	./model/digreco.xml
+	./model/digreco.bin
+[ INFO ] Loading testdata
+[ INFO ] Preparing input blobs
+[ INFO ] Loading model to the plugin
+[ INFO ] Starting inference in synchronous mode
+[ INFO ] Processing input batch [Device: CPU, Batchsize: 10]
+[ INFO ] Print the result
+Total processed images:  10
+Correct processed images:  10
+Accuracy: 100.00%
+Time: 0.0669s
+============================================================
+[ INFO ] Finished sucessfully
+[ INFO ] Creating Inference Engine
+[ INFO ] Loading network files:
+	./model/digreco.xml
+	./model/digreco.bin
+[ INFO ] Loading testdata
+[ INFO ] Preparing input blobs
+[ INFO ] Loading model to the plugin
+[ INFO ] Starting inference in synchronous mode
+[ INFO ] Processing input batch [Device: CPU, Batchsize: 100]
+[ INFO ] Print the result
+Total processed images:  100
+Correct processed images:  70
+Accuracy: 70.00%
+Time: 0.6646s
+[ INFO ] Finished sucessfully
+============================================================
