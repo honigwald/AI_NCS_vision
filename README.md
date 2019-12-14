@@ -17,3 +17,7 @@ As output a xml and bin file is generated which represents the weight and the st
 ## Benchmark
 The benchmarktest uses IE to run the exported NN. The time aswell the accuracy is the result of the benchmarktest. 
 As CLI parameter the batchsize and the target device (CPU, GPU, NCS) is configurable.
+
+## Setup runtime-environment
+source work3.7/bin/activate
+python3.7 -m venv work3.7
