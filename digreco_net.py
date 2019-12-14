@@ -1,3 +1,4 @@
+import sys, os
 import numpy as np
 import torch
 import torchvision
@@ -7,22 +8,8 @@ from time import time
 from torchvision import datasets, transforms
 from torch import nn, optim
 
-### Plot given image
-def view_classify(img, ps):
-    ps = ps.data.numpy().squeeze()
-    fi, (ax1, ax2) = plt.subplots(figsize=(6,9), ncols=2)
-    ax1.imshow(img.resize_(1, 28, 28).numpy().squeeze())
-    ax1.axis('off')
-    ax2.barh(np.arange(10), ps)
-    ax2.set_aspect(0.1)
-    ax2.set_yticks(np.arange(10))
-    ax2.set_yticklabels(np.arange(10))
-    ax2.set_title('Class Probalitiy')
-    ax2.set_xlim(0, 1.1)
-    plt.tight_layout()
-    plt.show()
-
 def main():
+    log.basicConfig(format="[%(levelname)s] %(message)s", level=log.INFO, stream=sys.stdout)
     log.info("Creating digit recognition net")
 
     ### Get test- and trainigdata
@@ -42,15 +29,14 @@ def main():
     output_size = 10            # Possible result (0 to 9)
 
     ### Define NN model
-    log.info("Creating network model")
+    log.info("Creating netmodel")
     model = nn.Sequential(nn.Linear(input_size, hidden_sizes[0]),
             nn.ReLU(),          # x > 0 = x, x < 0 = 0
             nn.Linear(hidden_sizes[0], hidden_sizes[1]),
             nn.ReLU(),
             nn.Linear(hidden_sizes[1], output_size),
             nn.Softmax(dim=1))  # LogSoftmax(x_i) = log(\frac{exp(x_i)}{\sum_j{exp(x_j)}})
-
-    log.info(model)
+    print(model)
 
     ### Prepare NN
     criterion = nn.NLLLoss()
@@ -60,7 +46,7 @@ def main():
     logps = model(images)
     loss = criterion(logps, labels)
 
-    log.info("Initializing network weights")
+    log.info("Initializing netmodel weights")
     loss.backward()
 
     ### Train NN using gradient descent
@@ -90,25 +76,27 @@ def main():
         else:
             print("Epoch {} - Training loss: {}".format(e, running_loss/len(trainloader)))
 
-        t_end = time()
-        log.info("Training completed")
-        print("\nTraining Time: {} Minutes".format(t_end-t_start)/60)
+    t_end = time()
+    log.info("Training completed in {:.2f} Minutes".format(((t_end)-(t_start))/60))
 
+    ### Test the network
+    # get random image
     images, labels = next(iter(valloader))
 
     img = images[0].view(1, 784)
+    img_lab = labels[0].numpy()
     with torch.no_grad():
         logps = model(img)
-
-    ### Test the network
     ps = torch.exp(logps)
     probab = list(ps.numpy()[0])
-    print("Predicetd Digit: ", probab.index(max(probab)))
-    view_classify(img.view(1, 28, 28), ps)
-
+    log.info("Testing netmodel.")
+    log.info("Predicted digit: {}".format(probab.index(max(probab))))
+    log.info("Processed digit: {}".format(img_lab))
+    
     ### Export trained network
-    log.info("Saving trained network model")
-    torch.save(model.state_dict(), 'model/digreco_net.onxx')
+    filenamepath = "model/digreco_net.onxx"
+    log.info("Saving trained netmodel to '{}'".format(filenamepath))
+    torch.save(model.state_dict(), filenamepath)
 
 if __name__ == '__main__':
     sys.exit(main() or 0)
