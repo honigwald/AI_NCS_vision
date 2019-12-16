@@ -52,7 +52,7 @@ def main():
     log.info("Starting training")
     optimizer = optim.SGD(model.parameters(), lr=0.003, momentum=0.9)
     t_start = time()
-    epochs = 15
+    epochs = 16
     for e in range(epochs):
         running_loss = 0
         for images, labels in trainloader:
@@ -83,9 +83,9 @@ def main():
     log.info("Processed digit: {}".format(img_lab))
     
     ### Export trained network
-    filenamepath = "model/digreco_net.onxx"
+    filenamepath = "model/digitrec_net.onnx"
     log.info("Saving trained netmodel to '{}'".format(filenamepath))
-    torch.save(model.state_dict(), filenamepath)
+    torch.onnx.export(model, img, filenamepath, export_params=True)
 
 if __name__ == '__main__':
     sys.exit(main() or 0)
