@@ -1,9 +1,8 @@
 import sys, os
 import numpy as np
-import torch
-import torchvision
 import logging as log
 import matplotlib.pyplot as plt
+import torch
 from time import time
 from torchvision import datasets, transforms
 from torch import nn, optim
@@ -57,21 +56,12 @@ def main():
     for e in range(epochs):
         running_loss = 0
         for images, labels in trainloader:
-            # Flatten MNIST images into a 784 long vector
-            images = images.view(images.shape[0], -1)
-
-            # Training pass
-            optimizer.zero_grad()
-
+            images = images.view(images.shape[0], -1)   # Flatten image into vector
+            optimizer.zero_grad()       # Training pass
             output = model(images)
             loss = criterion(output, labels)
-
-            # This is where the model learns by backpropagation
-            loss.backward()
-
-            # And optimizes its weights here
-            optimizer.step()
-
+            loss.backward()             # Train netmodel by backprop
+            optimizer.step()            # Optimize weights
             running_loss += loss.item()
         else:
             print("Epoch {} - Training loss: {}".format(e, running_loss/len(trainloader)))
@@ -80,8 +70,7 @@ def main():
     log.info("Training completed in {:.2f} Minutes".format(((t_end)-(t_start))/60))
 
     ### Test the network
-    # get random image
-    images, labels = next(iter(valloader))
+    images, labels = next(iter(valloader))  # get random image
 
     img = images[0].view(1, 784)
     img_lab = labels[0].numpy()
