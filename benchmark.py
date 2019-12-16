@@ -11,7 +11,7 @@ from torch import nn, optim, utils
 def data_loader(bs):
     # Loading MNIST Data
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,)), ])
-    valset = datasets.MNIST('../data/', download=True, train=False, transform=transform)
+    valset = datasets.MNIST('./data/', download=True, train=False, transform=transform)
     valloader = utils.data.DataLoader(valset, batch_size=bs, shuffle=True)
 
     #images, labels = next(iter(valloader))
@@ -24,7 +24,7 @@ def main():
     parser.add_argument('-d', '--device', 
                         help="Specify on which device the NN will be executed [CPU, MYRIAD]", 
                         required=True, type=str)
-    parser.add_argument('-b', '--batch', 
+    parser.add_argument('-b', '--batchsize', 
                         help="Specify the batchsize (number of images to test)", 
                         required=True, type=int)
     parser.add_argument('-h', '--help',
@@ -34,11 +34,11 @@ def main():
 
     args = parser.parse_args()
     device = args.device.upper()
-    batch_size = args.batch
+    batch_size = args.batchsize
 
     ### Path to network model
-    model_xml = "./model/digreco.xml"
-    model_bin = "./model/digreco.bin"
+    model_xml = "./model/digitrec_net.xml"
+    model_bin = "./model/digitrec_net.bin"
 
     ### Plugin initialization for specified device and load extensions library if specified
     log.info("Creating Inference Engine")
